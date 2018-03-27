@@ -751,7 +751,10 @@ service_config(<<"cloudwatch_logs">>, Region, Config)->
 service_config( <<"waf">>, _Region, Config ) -> Config;
 service_config( <<"cur">>, Region, Config ) ->
     Host = service_host(<<"cur">>, Region),
-    Config#aws_config{cur_host = Host}.
+    Config#aws_config{cur_host = Host};
+service_config( <<"ssm">>, Region, Config ) ->
+    Host = service_host(<<"ssm">>, Region),
+    Config#aws_config{ssm_host = Host}.
 
 %%%---------------------------------------------------------------------------
 -spec service_host( Service :: binary(),

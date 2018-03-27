@@ -4,7 +4,15 @@
          query_all/4, query_all/5, query_all_token/4, make_response/2, 
          get_items/2, to_string/1, encode_list/2, next_token/2]).
 
+-export([kvget/2, kvget/3]).         
+
 -define(MAX_ITEMS, 1000).
+
+-type kvlist() :: kvlist(term(), term()).
+-export_type([kvlist/0]).
+
+-type kvlist(Key, Value) :: [{Key, Value}].
+-export_type([kvlist/2]).
 
 sha_mac(K, S) ->
     crypto:hmac(sha, K, S).
@@ -128,3 +136,12 @@ next_token(Path, XML) ->
             ok
     end.
 
+-spec kvget(L :: kvlist(), Key :: term()) -> V :: term() | undefined.
+kvget(L, Key) -> kvget(L, Key, undefined).
+
+-spec kvget(L :: kvlist(), Key :: term(), Default :: term()) -> V :: term().
+kvget(L, Key, Default) ->
+    case lists:keyfind(Key, 1, L) of
+        {_Key, Value} -> Value;
+        false         -> Default
+    end.
